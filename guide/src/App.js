@@ -1,7 +1,6 @@
 import React, { useState, Component } from "react";
 import "./App.css";
 import Person from "./Person/Person";
-
 // useState() is the hook that allows us to use/ manage state in a functional component
 // const app = props => {
 // the argument to useState() is an object of initial state
@@ -95,12 +94,19 @@ class App extends Component {
     })
   }
   render() {
+    const style = {
+      backgroundColor: 'green',
+      font: 'inherit',
+      border: '1px solid red',
+      padding: '8px',
+      cursor: 'pointer'
+    };
     return (
       <div className="App">
         <h1>hi i am a react app</h1>
         <h3>{this.state.otherState}</h3>
         {/* bind is better and this way is ineffcient: can re render to often!! */}
-        <button onClick={() => this.switchNameHandler("CHRISBRO!!")}>Switch Name</button>
+        <button style={style} onClick={() => this.switchNameHandler("CHRISBRO!!")}>Switch Name</button>
         <Person
           name={this.state.persons[0].name}
           age={this.state.persons[0].age} />

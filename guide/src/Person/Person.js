@@ -1,7 +1,8 @@
 import React from 'react';
+import './Person.css';
 const person = props => {
   return (
-    <div>
+    <div className='Person'>
       {/* mutating state in parent component from a child presentational compnent */}
       <p onClick={props.click}>I am {props.name} and I am {props.age} years old!</p>
       <p>{props.children}</p>
