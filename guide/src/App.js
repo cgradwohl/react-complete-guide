@@ -15,10 +15,14 @@ const app = props => {
       { name: "patsy", age: 27 },
       { name: "taco", age: 5 }
     ],
-    otherState: 'some other initial value'
   });
 
-  console.log(personsState)
+  // it is best practice to use multiple calls to useState to manage 
+  // different slices of state independently
+  // Now we cannot accidently override state :)
+  const [otherState, setOtherState] = useState('some other initial value')
+
+  console.log(personsState, otherState)
 
   const switchNameHandler = () => {
     // the hooks setState function REPLACES state with whatever you passed to it
@@ -29,14 +33,13 @@ const app = props => {
         { name: "patsy", age: 27 },
         { name: "taco", age: 5 }
       ],
-      // need to manually add all other state !!!!
     })
   }
 
   return (
     <div className="App">
       <h1>hi i am a react app</h1>
-      <h3>{personsState.otherState}</h3>
+      <h3>{otherState}</h3>
       <button onClick={switchNameHandler}>Switch Name</button>
       <Person name={personsState.persons[0].name} age={personsState.persons[0].age} />
       <Person name={personsState.persons[1].name} age={personsState.persons[1].age}>
