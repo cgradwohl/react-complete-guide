@@ -59,7 +59,7 @@ class UserInput extends Component {
     // }
     render() {
         return (
-            <input style={this.styles} type="text" onChange={this.props.usernameHandler} placeholder={this.props.username} />
+            <input style={this.styles} type="text" onChange={this.props.usernameHandler} value={this.props.username} />
         );
     }
 }
