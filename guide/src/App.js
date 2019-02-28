@@ -6,7 +6,7 @@ import Person from "./Person/Person";
 // the argument to useState() is an object of initial state
 
 // useState() always returns an array with two elements
-//    stateArr[0] - current state, updated state 
+//    stateArr[0] - initial or current state, updated state 
 //    stateArr[1] - function to update the state
 // const [personsState, setPersonsState] = useState({
 //   persons: [
