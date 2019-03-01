@@ -1,5 +1,5 @@
 import React, { useState, Component } from "react";
-import "./App.css";
+import classes from "./App.css";
 import Person from "./Person/Person";
 // useState() is the hook that allows us to use/ manage state in a functional component
 // const app = props => {
@@ -158,18 +158,18 @@ class App extends Component {
      * This is a nice way to add a list of classes to a dynamic className property:
      */
     // let classes = ['red', 'bold'].join(' ');
-    const classes = [];
-    if (this.state.persons.length <= 2) classes.push('green');
-    if (this.state.persons.length <= 1) classes.push('bold');
+    const assignedClasses = [];
+    if (this.state.persons.length <= 2) assignedClasses.push(classes.green);
+    if (this.state.persons.length <= 1) assignedClasses.push(classes.bold);
     if (this.state.persons.length == 0) {
-      const idx = classes.findIndex(el => el === 'green');
-      classes[idx] = 'red';
+      const idx = assignedClasses.findIndex(el => el === 'green');
+      assignedClasses[idx] = 'red';
     }
     return (
-      <div className="App">
+      <div className={classes.App}>
         <h1>hi i am a react app</h1>
         <h3>{this.state.otherState}</h3>
-        <p className={classes.join(' ')}>This is working</p>
+        <p className={assignedClasses.join(' ')}>This is working</p>
         {/* bind is better and this way is ineffcient: can re render to often!! */}
         <button
           style={style}
