@@ -1,7 +1,6 @@
 import React, { useState, Component } from "react";
 import "./App.css";
 import Person from "./Person/Person";
-import Radium, { StyleRoot } from "radium";
 // useState() is the hook that allows us to use/ manage state in a functional component
 // const app = props => {
 // the argument to useState() is an object of initial state
@@ -134,12 +133,6 @@ class App extends Component {
       font: 'inherit',
       border: '1px solid white',
       padding: '8px',
-      cursor: 'pointer',
-      ':hover': {
-        backgroundColor: 'salmon',
-        color: 'black'
-
-      }
     };
 
     let persons = null;
@@ -160,10 +153,6 @@ class App extends Component {
         </div>
       );
       style.backgroundColor = 'green';
-      style[':hover'] = {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      }
     }
     /**
      * This is a nice way to add a list of classes to a dynamic className property:
@@ -177,19 +166,18 @@ class App extends Component {
       classes[idx] = 'red';
     }
     return (
-      <StyleRoot>
-        <div className="App">
-          <h1>hi i am a react app</h1>
-          <h3>{this.state.otherState}</h3>
-          <p className={classes.join(' ')}>This is working</p>
-          {/* bind is better and this way is ineffcient: can re render to often!! */}
-          <button
-            style={style}
-            onClick={this.togglePersonHandler}>Toggle Persons</button>
-          {persons}
-          {/* NO DIRECTIVES NECESSARY :)*/}
-          {/* basic if else example */}
-          {/* {
+      <div className="App">
+        <h1>hi i am a react app</h1>
+        <h3>{this.state.otherState}</h3>
+        <p className={classes.join(' ')}>This is working</p>
+        {/* bind is better and this way is ineffcient: can re render to often!! */}
+        <button
+          style={style}
+          onClick={this.togglePersonHandler}>Toggle Persons</button>
+        {persons}
+        {/* NO DIRECTIVES NECESSARY :)*/}
+        {/* basic if else example */}
+        {/* {
             this.state.bool ?
               <div>
                 <Person
@@ -208,8 +196,7 @@ class App extends Component {
                   age={this.state.persons[2].age} />
               </div> : null
           } */}
-        </div>
-      </StyleRoot>
+      </div>
     );
     // this is ana example of the react api under the hood:
     // return React.createElement(
@@ -220,4 +207,4 @@ class App extends Component {
   }
 }
 
-export default Radium(App);
+export default App;
