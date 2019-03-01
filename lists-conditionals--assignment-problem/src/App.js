@@ -1,7 +1,25 @@
 import React, { Component } from 'react';
 import './App.css';
-
+import ValidationComponent from './ValidationComponent/ValidationComponent';
+import CharComponent from './CharComponent/CharComponent';
 class App extends Component {
+  state = {
+    len: 0,
+    str: ''
+  }
+  handleLengthChange = (e) => {
+    const str = e.target.value;
+    const len = str.length;
+    this.setState({ len, str })
+  }
+  deleteChar = (idx) => {
+    // get reference to state
+    const str = this.state.str.split('').filter((char, index) => {
+      if (index !== idx) return char
+    }).join('');
+    this.setState({ str })
+  }
+
   render() {
     return (
       <div className="App">
@@ -14,6 +32,14 @@ class App extends Component {
           <li>When you click a CharComponent, it should be removed from the entered text.</li>
         </ol>
         <p>Hint: Keep in mind that JavaScript strings are basically arrays!</p>
+        <input type="text" onChange={this.handleLengthChange.bind(this)} value={this.state.str} />
+        <p>{this.state.len}</p>
+        <ValidationComponent textLen={this.state.len} />
+        {
+          this.state.str.split('').map((char, idx) => {
+            return <CharComponent char={char} key={idx} clickHandler={this.deleteChar.bind(this, idx)} />
+          })
+        }
       </div>
     );
   }
