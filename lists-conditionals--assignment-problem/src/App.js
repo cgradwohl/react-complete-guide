@@ -22,6 +22,10 @@ class App extends Component {
   }
 
   render() {
+    const charList = this.state.str.split('').map((char, idx) => {
+      return <CharComponent char={char} key={idx} clickHandler={this.deleteChar.bind(this, idx)} />
+    });
+
     return (
       <div className="App">
         <ol>
@@ -36,9 +40,7 @@ class App extends Component {
         <input type="text" onChange={this.handleLengthChange.bind(this)} value={this.state.str} />
         <p>{this.state.len}</p>
         <ValidationComponent textLen={this.state.len} />
-        {this.state.str.split('').map((char, idx) => {
-          return <CharComponent char={char} key={idx} clickHandler={this.deleteChar.bind(this, idx)} />
-        })}
+        {charList}
       </div>
     );
   }
