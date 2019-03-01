@@ -1,6 +1,7 @@
 import React, { useState, Component } from "react";
 import "./App.css";
 import Person from "./Person/Person";
+import Radium, { StyleRoot } from "radium";
 // useState() is the hook that allows us to use/ manage state in a functional component
 // const app = props => {
 // the argument to useState() is an object of initial state
@@ -126,12 +127,19 @@ class App extends Component {
     this.setState({ bool: !doesShow });
   }
   render() {
+    // can't use psuedo selectors :(
     const style = {
-      backgroundColor: 'green',
+      backgroundColor: 'red',
+      color: 'white',
       font: 'inherit',
-      border: '1px solid red',
+      border: '1px solid white',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'salmon',
+        color: 'black'
+
+      }
     };
 
     let persons = null;
@@ -151,36 +159,57 @@ class App extends Component {
           })}
         </div>
       );
+      style.backgroundColor = 'green';
+      style[':hover'] = {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
+    }
+    /**
+     * This is a nice way to add a list of classes to a dynamic className property:
+     */
+    // let classes = ['red', 'bold'].join(' ');
+    const classes = [];
+    if (this.state.persons.length <= 2) classes.push('green');
+    if (this.state.persons.length <= 1) classes.push('bold');
+    if (this.state.persons.length == 0) {
+      const idx = classes.findIndex(el => el === 'green');
+      classes[idx] = 'red';
     }
     return (
-      <div className="App">
-        <h1>hi i am a react app</h1>
-        <h3>{this.state.otherState}</h3>
-        {/* bind is better and this way is ineffcient: can re render to often!! */}
-        <button style={style} onClick={this.togglePersonHandler}>Switch Name</button>
-        {persons}
-        {/* NO DIRECTIVES NECESSARY :)*/}
-        {/* basic if else example */}
-        {/* {
-          this.state.bool ?
-            <div>
-              <Person
-                name={this.state.persons[0].name}
-                age={this.state.persons[0].age} />
-              <Person
-                name={this.state.persons[1].name}
-                age={this.state.persons[1].age}
-                // BIND IS BETTER
-                click={this.switchNameHandler.bind(this, "PATSY!!")}
-                changed={this.nameChangedHandler}>
-                Patsy Hobbies: rock climbing
-              </Person>
-              <Person
-                name={this.state.persons[2].name}
-                age={this.state.persons[2].age} />
-            </div> : null
-        } */}
-      </div>
+      <StyleRoot>
+        <div className="App">
+          <h1>hi i am a react app</h1>
+          <h3>{this.state.otherState}</h3>
+          <p className={classes.join(' ')}>This is working</p>
+          {/* bind is better and this way is ineffcient: can re render to often!! */}
+          <button
+            style={style}
+            onClick={this.togglePersonHandler}>Toggle Persons</button>
+          {persons}
+          {/* NO DIRECTIVES NECESSARY :)*/}
+          {/* basic if else example */}
+          {/* {
+            this.state.bool ?
+              <div>
+                <Person
+                  name={this.state.persons[0].name}
+                  age={this.state.persons[0].age} />
+                <Person
+                  name={this.state.persons[1].name}
+                  age={this.state.persons[1].age}
+                  // BIND IS BETTER
+                  click={this.switchNameHandler.bind(this, "PATSY!!")}
+                  changed={this.nameChangedHandler}>
+                  Patsy Hobbies: rock climbing
+                </Person>
+                <Person
+                  name={this.state.persons[2].name}
+                  age={this.state.persons[2].age} />
+              </div> : null
+          } */}
+        </div>
+      </StyleRoot>
     );
     // this is ana example of the react api under the hood:
     // return React.createElement(
@@ -191,4 +220,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Radium(App);
