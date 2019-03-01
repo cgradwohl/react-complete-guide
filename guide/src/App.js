@@ -112,20 +112,11 @@ class App extends Component {
       // here we can assign jsx html code into a variable 
       persons = (
         <div>
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age} />
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-            // BIND IS BETTER
-            click={this.switchNameHandler.bind(this, "PATSY!!")}
-            changed={this.nameChangedHandler}>
-            Patsy Hobbies: rock climbing
-            </Person>
-          <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age} />
+          {
+            this.state.persons.map(obj => {
+              return <Person name={obj.name} age={obj.age}></Person>
+            })
+          }
         </div>
       );
     }
