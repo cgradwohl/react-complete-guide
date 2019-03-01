@@ -130,3 +130,25 @@ b. use spread operator to create a new value, that is a copy of the state
 c. update the new value with the value from the event
 d. update state with the new value
 
+## 4. Conditional Rendering
+Everything in jsx is javascript :) So we can do stuff like this
+```
+let dudes = null;
+if(bool) {
+  dudes = (
+    <div>
+      {this.state.dudes.map(dude => {
+        return <Dude name={dude.name} />
+      })}
+    </div>
+  )
+}
+
+You can also do stuff like this:
+<div>
+  {
+    bool == true ? 
+    <h1>SHOW ME</h1>
+    :null
+  }
+</div>
