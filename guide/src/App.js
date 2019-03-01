@@ -68,7 +68,8 @@ class App extends Component {
       { name: "patsy", age: 27 },
       { name: "taco", age: 5 }
     ],
-    otherState: "some other state"
+    otherState: "some other state",
+    bool: false
   };
   // this only works because if es6 function
   // the owner is the class function object, 
@@ -93,6 +94,10 @@ class App extends Component {
       ]
     })
   }
+  togglePersonHandler = () => {
+    const doesShow = this.state.bool;
+    this.setState({ bool: !doesShow });
+  }
   render() {
     const style = {
       backgroundColor: 'green',
@@ -101,26 +106,59 @@ class App extends Component {
       padding: '8px',
       cursor: 'pointer'
     };
+
+    let persons = null;
+    if (this.state.bool) {
+      // here we can assign jsx html code into a variable 
+      persons = (
+        <div>
+          <Person
+            name={this.state.persons[0].name}
+            age={this.state.persons[0].age} />
+          <Person
+            name={this.state.persons[1].name}
+            age={this.state.persons[1].age}
+            // BIND IS BETTER
+            click={this.switchNameHandler.bind(this, "PATSY!!")}
+            changed={this.nameChangedHandler}>
+            Patsy Hobbies: rock climbing
+            </Person>
+          <Person
+            name={this.state.persons[2].name}
+            age={this.state.persons[2].age} />
+        </div>
+      );
+    }
     return (
       <div className="App">
         <h1>hi i am a react app</h1>
         <h3>{this.state.otherState}</h3>
         {/* bind is better and this way is ineffcient: can re render to often!! */}
-        <button style={style} onClick={() => this.switchNameHandler("CHRISBRO!!")}>Switch Name</button>
-        <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age} />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-          // BIND IS BETTER
-          click={this.switchNameHandler.bind(this, "PATSY!!")}
-          changed={this.nameChangedHandler}>
-          Patsy Hobbies: rock climbing
-        </Person>
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age} />
+        <button style={style} onClick={this.togglePersonHandler}>Switch Name</button>
+
+        {/* NO DIRECTIVES NECESSARY :)*/}
+        {/* basic if else example */}
+        {/* {
+          this.state.bool ?
+            <div>
+              <Person
+                name={this.state.persons[0].name}
+                age={this.state.persons[0].age} />
+              <Person
+                name={this.state.persons[1].name}
+                age={this.state.persons[1].age}
+                // BIND IS BETTER
+                click={this.switchNameHandler.bind(this, "PATSY!!")}
+                changed={this.nameChangedHandler}>
+                Patsy Hobbies: rock climbing
+              </Person>
+              <Person
+                name={this.state.persons[2].name}
+                age={this.state.persons[2].age} />
+            </div> : null
+        } */}
+        {persons}
+
       </div>
     );
     // this is ana example of the react api under the hood:
