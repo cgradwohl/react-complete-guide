@@ -64,9 +64,9 @@ class App extends Component {
   // React to re-render your components and potentially update the DOM in the browser 
   state = {
     persons: [
-      { name: "chris", age: 30 },
-      { name: "patsy", age: 27 },
-      { name: "taco", age: 5 }
+      { id: 'aqgQD', name: "chris", age: 30 },
+      { id: 'gwovsh98c7y', name: "patsy", age: 27 },
+      { id: 'qaciox8z978', name: "taco", age: 5 }
     ],
     otherState: "some other state",
     bool: false
@@ -83,6 +83,16 @@ class App extends Component {
         { name: "taco", age: 5 }
       ]
     })
+  }
+
+  deletePersonHandler = (idx) => {
+    // THIS IS MUTATING THE STATE!!! 
+    // OBJECTS ARE A REFERENCE TYPE SO YOU ARE ACTUALLY MUTATING STATE
+    // const persons = this.state.persons;
+    // INSTEAD DO THIS :)
+    const persons = [...this.state.persons];
+    persons.splice(idx, 1);
+    this.setState({ persons })
   }
 
   nameChangedHandler = (event) => {
@@ -112,11 +122,13 @@ class App extends Component {
       // here we can assign jsx html code into a variable 
       persons = (
         <div>
-          {
-            this.state.persons.map(obj => {
-              return <Person name={obj.name} age={obj.age}></Person>
-            })
-          }
+          {this.state.persons.map((obj, idx) => {
+            return <Person
+              click={this.deletePersonHandler.bind(this, idx)}
+              name={obj.name}
+              age={obj.age}
+              key={obj.id} />
+          })}
         </div>
       );
     }
@@ -126,7 +138,7 @@ class App extends Component {
         <h3>{this.state.otherState}</h3>
         {/* bind is better and this way is ineffcient: can re render to often!! */}
         <button style={style} onClick={this.togglePersonHandler}>Switch Name</button>
-
+        {persons}
         {/* NO DIRECTIVES NECESSARY :)*/}
         {/* basic if else example */}
         {/* {
@@ -148,8 +160,6 @@ class App extends Component {
                 age={this.state.persons[2].age} />
             </div> : null
         } */}
-        {persons}
-
       </div>
     );
     // this is ana example of the react api under the hood:
