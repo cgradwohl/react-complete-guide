@@ -1,7 +1,5 @@
 This is the repo for 'React - The Complete Guide' course on Udemy
 
-
-
 ## 1. State, hooks, constructors and super()
 To manipulate state you can extend React.component or you can use useSate hook in a functional component. 
 
@@ -29,6 +27,8 @@ we call super(props) inside the constructor if we have to use this.props
 
 ## 2. class properties and methods for events
 
+*** please see A NOTE ON 'this' for a review of 'this' in javascript
+
 a. When you define a field that is a function you can use the () => {} syntax which will allow the this keyword to be bound to the encapsulating class. This is called the 'public class fields syntax'. Public class fields syntax will correctly bind callbacks from events. 
 
 i.e.
@@ -36,64 +36,6 @@ class myClass {
   myHandlerField = (e) => {console.log(e.target.value)} 
   render() {}
 }
-
-
-QUESTION: What is 'this' bound to in a regular javascript function?
-ANSWER: 'this', always references the owner scope of the __function__ that it is in. 'this' does not reference where the function is defined(lexical context), it references where the function is being called(execution context) 
-```
-var bunny = {
-  name: 'Usagi',
-  tasks: ['transform', 'eat cake', 'blow kisses'],
-  showTasks: function() {
-    this.tasks.forEach(function(task) {
-      alert(this.name + " wants to " + task); // 'this' references GLOBAL
-    });
-  }
-};
-```
-Above you can see that 'this' is inside the callback of Array.forEach(). Who is calling this function? 
-1. first the bunny object calls bunny.showTasks()
-2. Then show tasks reaches for Array.forEach(), which is now in gloabl context, so 'this' is bound to Global/Window! 
-So if I change it to an arrow function the it will be executed in the lexical scope and the 'this' reference will bubble to the top, searching for the parent object where it is defined!
-
-When it is inside of an object’s method — the function’s owner is the object. Thus the ‘this’ keyword is bound to the object. Yet when it is inside of a function, either stand alone or within another method, it will always refer to the window/global object.
-
-ANOTHER es5 EXAMPLE:
-```
-var dude = {
-  sound: 'bro!',
-  talk: function() {
-    console.log(this.sound)
-  }
-}
-dude.talk(); // 'bro!'
-var dudeTalk = dude.talk;
-dudeTalk(); // undefined
-```
-Here the call dudeTalk() returns undefined because as soon as we reference a METHOD into a variable and then execute it, the Global/Window object is calling that method reference. But Window/Global does not have a 'sound' property on it, therefore it is undefined. The owner scope of dudeTalk() is global! :) Calling dudeTalk is the same as doing this:
-```
-var dudeTalk = function() {
-  console.log(this.sound)
-}
-dudeTalk(); //undefined
-```
-
-ANOTHER es5 example:
-```
-var btn = document.getElementById('myDopeAssButton');
-btn.addEventListener('click', dude.talk);
-```
-Again when the button is clicked the 'this' inside of the method dude.talk() will not reference the dude object because the dude object is not who is calling the method. The window object is dispatching the event and then calling dude.talk in the callback. Therefore the window object is the reference to 'this'. to overcome this you can do the following:
-```
-var btn = document.getElementById('myDopeAssButton');
-btn.addEventListener('click', dude.talk.bind(dude));
-```
-
-
-
-QUESTION: this may not work for referencing the class ?? What is the binding of this in arrow functions? 
-ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to it’s current surrounding scope and nothing further. Thus the inner function knew to bind to the inner function only, and not to the object’s method or the object itself.
-
 
 
 b. If you use 'method' syntax myMethod(){}, then 'this' will still reference the encapsulating 
@@ -152,3 +94,60 @@ You can also do stuff like this:
     :null
   }
 </div>
+```
+
+## A NOTE ON 'this'
+QUESTION: What is 'this' bound to in an es5 javascript function?
+ANSWER: 'this', always references the owner scope of the __function__ that it is in. 'this' does not reference where the function is defined(lexical context), it references where the function is being called(execution context) 
+```
+var bunny = {
+  name: 'Usagi',
+  tasks: ['transform', 'eat cake', 'blow kisses'],
+  showTasks: function() {
+    this.tasks.forEach(function(task) {
+      alert(this.name + " wants to " + task); // 'this' references GLOBAL
+    });
+  }
+};
+```
+Above you can see that 'this' is inside the callback of Array.forEach(). Who is calling this function? 
+1. first the bunny object calls bunny.showTasks()
+2. Then show tasks reaches for Array.forEach(), which is now in gloabl context, so 'this' is bound to Global/Window! 
+So if I change it to an arrow function the it will be executed in the lexical scope and the 'this' reference will bubble to the top, searching for the parent object where it is defined!
+
+When it is inside of an object’s method — the function’s owner is the object. Thus the ‘this’ keyword is bound to the object. Yet when it is inside of a function, either stand alone or within another method, it will always refer to the window/global object.
+
+ANOTHER es5 EXAMPLE:
+```
+var dude = {
+  sound: 'bro!',
+  talk: function() {
+    console.log(this.sound)
+  }
+}
+dude.talk(); // 'bro!'
+var dudeTalk = dude.talk;
+dudeTalk(); // undefined
+```
+Here the call dudeTalk() returns undefined because as soon as we reference a METHOD into a variable and then execute it, the Global/Window object is calling that method reference. But Window/Global does not have a 'sound' property on it, therefore it is undefined. The owner scope of dudeTalk() is global! :) Calling dudeTalk is the same as doing this:
+```
+var dudeTalk = function() {
+  console.log(this.sound)
+}
+dudeTalk(); //undefined
+```
+
+YET ANOTHER es5 EXAMPLE:
+```
+var btn = document.getElementById('myDopeAssButton');
+btn.addEventListener('click', dude.talk);
+```
+Again when the button is clicked the 'this' inside of the method dude.talk() will not reference the dude object because the dude object is not who is calling the method. The window object is dispatching the event and then calling dude.talk in the callback. Therefore the window object is the reference to 'this'. to overcome this you can do the following:
+```
+var btn = document.getElementById('myDopeAssButton');
+btn.addEventListener('click', dude.talk.bind(dude));
+```
+
+QUESTION: this may not work for referencing the class ?? What is the binding of this in arrow functions? 
+
+ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to it’s current surrounding scope and nothing further. Thus the inner function knew to bind to the inner function only, and not to the object’s method or the object itself.
