@@ -71,11 +71,11 @@ class App extends Component {
     otherState: "some other state",
     bool: false
   };
-  // this only works because if es6 function
+  // this only works because it is an es6 function which has lexical context
   // the owner is the class function object, 
-  // therefore the correct this is used implicitly
+  // therefore the correct 'this' is used implicitly
   switchNameHandler = (newName) => {
-    // DONT DO THIS ---> this.state.persons[0].name = 'CHRISTOPHER'
+    // DONT DO THIS ---> this.state.persons[0].name = 'CHRISTOPHER', use setState()
     this.setState({
       persons: [
         { name: newName, age: 30 },
@@ -95,14 +95,31 @@ class App extends Component {
     this.setState({ persons })
   }
 
-  nameChangedHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: "chris", age: 30 },
-        { name: event.target.value, age: 27 },
-        { name: "taco", age: 5 }
-      ]
-    })
+  nameChangedHandler = (id, event) => {
+    // get the index or reference to the state 
+    const personIdx = this.state.persons.findIndex(p => p.id === id);
+
+    // copying the state key, not mutating it directly
+    const person = {
+      ...this.state.persons[personIdx]
+    }
+    // -or-
+    // const person = Object.assign({}, this.state.persons[personIdx])
+
+    // update the new value, to be in state
+    person.name = event.target.value;
+
+    // copying the state object
+    const persons = [...this.state.persons]
+
+    // -or-
+    // const persons = this.state.persons.slice()
+
+    // update the new value
+    persons[personIdx] = person;
+
+    // set the state with new values
+    this.setState({ persons });
   }
   togglePersonHandler = () => {
     const doesShow = this.state.bool;
@@ -127,7 +144,10 @@ class App extends Component {
               click={this.deletePersonHandler.bind(this, idx)}
               name={obj.name}
               age={obj.age}
-              key={obj.id} />
+              key={obj.id}
+              // NOTE THAT THE react synthetic event is passed as the 
+              // second argument to the handler AFTER obj.id
+              changed={this.nameChangedHandler.bind(this, obj.id)} />
           })}
         </div>
       );

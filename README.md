@@ -2,7 +2,7 @@ This is the repo for 'React - The Complete Guide' course on Udemy
 
 
 
-1. State
+## 1. State, hooks, constructors and super()
 To manipulate state you can extend React.component or you can use useSate hook in a functional component. 
 
 super() is called inside a react component only if it has a constructor. 
@@ -27,9 +27,16 @@ we call super(props) inside the constructor if we have to use this.props
         1. Initializing local state by assigning an object to this.state.
         2. Binding event handler methods to an instance.
 
-2. class properties and methods for events
+## 2. class properties and methods for events
 
 a. When you define a field that is a function you can use the () => {} syntax which will allow the this keyword to be bound to the encapsulating class. This is called the 'public class fields syntax'. Public class fields syntax will correctly bind callbacks from events. 
+
+i.e.
+class myClass {
+  myHandlerField = (e) => {console.log(e.target.value)} 
+  render() {}
+}
+
 
 QUESTION: What is 'this' bound to in a regular javascript function?
 ANSWER: 'this', always references the owner scope of the __function__ that it is in. 'this' does not reference where the function is defined(lexical context), it references where the function is being called(execution context) 
@@ -87,6 +94,8 @@ btn.addEventListener('click', dude.talk.bind(dude));
 QUESTION: this may not work for referencing the class ?? What is the binding of this in arrow functions? 
 ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to it’s current surrounding scope and nothing further. Thus the inner function knew to bind to the inner function only, and not to the object’s method or the object itself.
 
+
+
 b. If you use 'method' syntax myMethod(){}, then 'this' will still reference the encapsulating 
 class, but if you use 'method' syntax for event handlers then the this keyword will no longer reference the class(similar to how js is executed at runtime) to over come this you have to bind the method in the class constructor to the 'this' keyword. i.e.
 ```
@@ -94,5 +103,30 @@ class, but if you use 'method' syntax for event handlers then the this keyword w
     this.myMethod = this.myMethod.bind(this)
   }
 ```
+
+
 c. The third AND worst option is too use an arrow function directly in the callback. This can cause react to uneccisarrily re render components so avoid this use.
 <button onClick={(e) => this.myHandler(e)}>
+
+
+
+d. events inside lists
+From React docs:
+Inside a loop it is common to want to pass an extra parameter to an event handler. For example, if id is the object ID, either of the following would work:
+
+<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+<button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+The above two lines are equivalent, and use arrow functions and Function.prototype.bind respectively.
+
+In both cases, the e argument representing the React event will be passed as a second argument after the ID. With an arrow function, we have to pass it explicitly, but with bind any further arguments are automatically forwarded.
+
+
+## 3. Updating State from a dynamic list without redux:
+To do this we will need to somehow pass the event and new value from the dynamic list to the event handler from the event callback.
+*** see section `2. d.` above to see how this is done :) 
+ Next in the event handler public class field function do the following:
+a. get a reference to the slice of state using an id or an index
+b. use spread operator to create a new value, that is a copy of the state
+c. update the new value with the value from the event
+d. update state with the new value
+
