@@ -126,16 +126,10 @@ class App extends Component {
     this.setState({ bool: !doesShow });
   }
   render() {
-    // can't use psuedo selectors :(
-    const style = {
-      backgroundColor: 'red',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid white',
-      padding: '8px',
-    };
 
     let persons = null;
+    let btnClass = '';
+
     if (this.state.bool) {
       // here we can assign jsx html code into a variable 
       persons = (
@@ -152,7 +146,7 @@ class App extends Component {
           })}
         </div>
       );
-      style.backgroundColor = 'green';
+      btnClass = classes.Green;
     }
     /**
      * This is a nice way to add a list of classes to a dynamic className property:
@@ -172,7 +166,7 @@ class App extends Component {
         <p className={assignedClasses.join(' ')}>This is working</p>
         {/* bind is better and this way is ineffcient: can re render to often!! */}
         <button
-          style={style}
+          className={btnClass}
           onClick={this.togglePersonHandler}>Toggle Persons</button>
         {persons}
         {/* NO DIRECTIVES NECESSARY :)*/}
