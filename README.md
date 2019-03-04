@@ -98,7 +98,7 @@ You can also do stuff like this:
 
 ## A NOTE ON 'this'
 QUESTION: What is 'this' bound to in an es5 javascript function?
-ANSWER: 'this', always references the owner scope of the __function__ that it is in. 'this' does not reference where the function is defined(lexical context), it references where the function is being called(execution context) 
+ANSWER: 'this', always references the owner scope of the __function__ that it is in. 'this' does not reference where the function is defined(lexical context), it references where the function is being called from(execution context) 
 ```
 var bunny = {
   name: 'Usagi',
@@ -142,8 +142,17 @@ YET ANOTHER es5 EXAMPLE:
 var btn = document.getElementById('myDopeAssButton');
 btn.addEventListener('click', dude.talk);
 ```
-Again when the button is clicked the 'this' inside of the method dude.talk() will not reference the dude object because the dude object is not who is calling the method. The window object is dispatching the event and then calling dude.talk in the callback. Therefore the window object is the reference to 'this'. to overcome this you can do the following:
+Again when the button is clicked the 'this' inside of the method dude.talk() will not reference the dude object because the dude object is not who is calling the method. The window object is dispatching the event and then calling dude.talk in the callback. Therefore the window object is the reference to 'this', and window does not have a property sound. To overcome this you can do the following:
 ```
+// the lame way, create some scope
+btn.addEventListener('click', function() {
+  dude.talk();
+});
+// Now the anonymous function will instantiate the dude object and then call it in scope, so 'this' will reference the dude object.
+```
+
+```
+// the nifty way!
 var btn = document.getElementById('myDopeAssButton');
 btn.addEventListener('click', dude.talk.bind(dude));
 ```

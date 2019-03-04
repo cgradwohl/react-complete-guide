@@ -171,35 +171,9 @@ class App extends Component {
           className={btnClass}
           onClick={this.togglePersonHandler}>Toggle Persons</button>
         {persons}
-        {/* NO DIRECTIVES NECESSARY :)*/}
-        {/* basic if else example */}
-        {/* {
-            this.state.bool ?
-              <div>
-                <Person
-                  name={this.state.persons[0].name}
-                  age={this.state.persons[0].age} />
-                <Person
-                  name={this.state.persons[1].name}
-                  age={this.state.persons[1].age}
-                  // BIND IS BETTER
-                  click={this.switchNameHandler.bind(this, "PATSY!!")}
-                  changed={this.nameChangedHandler}>
-                  Patsy Hobbies: rock climbing
-                </Person>
-                <Person
-                  name={this.state.persons[2].name}
-                  age={this.state.persons[2].age} />
-              </div> : null
-          } */}
+
       </div>
     );
-    // this is ana example of the react api under the hood:
-    // return React.createElement(
-    //   'div',
-    //   { className: 'App' },
-    //   React.createElement('h1', null, 'hello there!!')
-    // );
   }
 }
 
