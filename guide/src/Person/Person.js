@@ -1,6 +1,10 @@
 import React from 'react';
 import classes from './Person.css';
 const person = props => {
+  const rdm = Math.random();
+  if (rdm > 0.7) {
+    throw new Error('POOP');
+  }
   return (
     <div className={classes.Person}>
       {/* mutating state in parent component from a child presentational compnent */}

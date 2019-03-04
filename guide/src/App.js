@@ -1,6 +1,7 @@
 import React, { useState, Component } from "react";
 import classes from "./App.css";
 import Person from "./Person/Person";
+import ErrorBoundry from "./ErrorBoundry/ErrorBoundry";
 // useState() is the hook that allows us to use/ manage state in a functional component
 // const app = props => {
 // the argument to useState() is an object of initial state
@@ -135,14 +136,15 @@ class App extends Component {
       persons = (
         <div>
           {this.state.persons.map((obj, idx) => {
-            return <Person
-              click={this.deletePersonHandler.bind(this, idx)}
-              name={obj.name}
-              age={obj.age}
-              key={obj.id}
-              // NOTE THAT THE react synthetic event is passed as the 
-              // second argument to the handler AFTER obj.id
-              changed={this.nameChangedHandler.bind(this, obj.id)} />
+            return <ErrorBoundry key={obj.id}>
+              <Person
+                click={this.deletePersonHandler.bind(this, idx)}
+                name={obj.name}
+                age={obj.age}
+                // NOTE THAT THE react synthetic event is passed as the 
+                // second argument to the handler AFTER obj.id
+                changed={this.nameChangedHandler.bind(this, obj.id)} />
+            </ErrorBoundry>
           })}
         </div>
       );
