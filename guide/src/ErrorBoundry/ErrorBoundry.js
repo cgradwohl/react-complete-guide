@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 // NICE TOOL TO HANDLE A SITUTATION WHERE WE MAY NEED TO HANDLE AN ERROR GRACEFULLY
+// https://reactjs.org/docs/error-boundaries.html
 class ErrorBoundry extends Component {
   state = {
     hasError: false,
