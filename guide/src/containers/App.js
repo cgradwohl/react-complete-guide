@@ -16,13 +16,16 @@ class App extends Component {
       { id: 'qaciox8z978', name: "taco", age: 5 }
     ],
     otherState: "This is working!!",
-    showPersons: false
+    showPersons: false,
+    showCockpit: true
   };
 
   // old lifecyle method not that useful
   // used to initialize the state of a 
   // component from new props that were passed to it
   // before shouldComponentUpdate, render
+  // *** not needed if want to base ypuor state on props,
+  // *** you can useSate(){} instead!
   static getDerivedStateFromProps(props, state) {
     console.log('[App.js] getDerivedStateFromProps', props)
     return state;
@@ -50,6 +53,8 @@ class App extends Component {
     console.log('[App.js] componentDidMount')
   }
 
+  // can be used for performance optimizations
+  // decides when to re render 
   shouldComponentUpdate() {
     console.log('[App.js] shouldComponentUpdate');
     console.log('    // this can be used to block the update');
@@ -119,12 +124,13 @@ class App extends Component {
     }
     return (
       <div className={classes.App}>
-        <Cockpit
+        <button onClick={() => this.setState({showCockpit: false})}>Remove Cockpit</button>
+        {this.state.showCockpit ? <Cockpit
           title={this.props.appTitle}
           showPersons={this.state.showPersons}
           otherState={this.state.otherState}
           persons={this.state.persons}
-          clicked={this.togglePersonHandler} />
+          clicked={this.togglePersonHandler} /> : null}
         {persons}
       </div>
     );

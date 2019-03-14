@@ -168,6 +168,7 @@ ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to
 4. Render Child Components 
 [Deprecated] componentWillMount()
 5. *componentDidMount() - side effects OK, DO NOT update state.
+6. componentWillUnmount() - gets executed (when implemented) right before a Component is removed from the DOM
 
 ## 6. Lifecycle Methods - Update
 1. getDerivedStateFromProps(props, state) - sync state to props, no side effects, OLD WAY, NIECHE
@@ -178,4 +179,9 @@ ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to
 5. getSnapshotBeforeUpdate(prevProps, prevState) - last minute DOM operations, no side effects, NIECHE
 [Deprecated] componentWillUpdate()
 6. *componentDidUpdate(prevProps, prevState, snapshot) - side effects OK, DO NOT update state, which would trigger re-render 
+7. componentWillUnmount() - gets executed (when implemented) right before a Component is removed from the DOM
+
+## 7. Functional Hooks
+1. useState((state, stateHandler) => {}); - allows you to access state and setState().
+2. useEffects(() => {}, []) - Runs every render cycle (creation or update cycle), componentDidMount() and ComponentDidUpdate() combined
 

@@ -1,10 +1,38 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import classes from './Cockpit.css';
 const cockpit = (props) => {
-  // Runs every update cycle
-  useEffect(() => {
-    console.log('[Cockpit.js] useEffect()');
+  // if want to base your state on props,
+  // you can useSate(){} instead!
+  useState((state, stateHandler) => {
+
   });
+
+  // Runs every render cycle (creation or )
+  // componentDidMount() and ComponentDidUpdate() combined
+  useEffect(() => {
+    console.log('[Cockpit.js] useEffect(), happens every render cycle');
+    // HTTP REQ
+    setTimeout(() => {
+      alert('DUDEBRO');
+    }, 1000);
+    return () => {
+      // this runs for the last time
+      console.log('[Cockpit.js] Cleanup work');
+    }
+    // you can pass an array as a second arg 
+    // to useEffects which will tell it to 
+    // run only when that dependency/props has changed.
+    // pass empty array to only runs the first time!
+  }, []);
+
+  useEffect(() => {
+    console.log('[Cockpit.js] 2nd useEffect');
+    return () => {
+      // this runs for the last time
+      console.log('[Cockpit.js] Cleanup work in 2nd useEffect');
+    }
+  });
+
   const assignedClasses = [];
   let btnClass = '';
   if (props.showPersons) {
