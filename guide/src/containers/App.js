@@ -1,6 +1,5 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import classes from "./App.css";
-import Person from "../components/Persons/Person/Person";
 import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
 
@@ -38,7 +37,9 @@ class App extends Component {
   // takes previous state, props
   // last minute DOM ops
   // called after render
-  static getSnapshotBeforeUpdate(prevProps, prevState) {}
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    return null;
+  }
 
   // old lifecyle method, do not use
   // componentWillMount() {
