@@ -4,10 +4,10 @@ This is the repo for 'React - The Complete Guide' course on Udemy
 To manipulate state you can extend React.component or you can use useSate hook in a functional component. 
 
 super() is called inside a react component only if it has a constructor. 
-The reason why this cannot be allowed before super() is because 'this' 
+The reason why 'this' cannot be referenced before super() is because 'this' 
 is uninitialized if super() is not called.
 
-we call super(props) inside the constructor if we have to use this.props
+we call super(props) inside the constructor if we have to reference this.props.
 
 
   FROM REACT DOCS : 
@@ -160,3 +160,22 @@ btn.addEventListener('click', dude.talk.bind(dude));
 QUESTION: this may not work for referencing the class ?? What is the binding of this in arrow functions? 
 
 ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to it’s current surrounding scope and nothing further. Thus the inner function knew to bind to the inner function only, and not to the object’s method or the object itself.
+
+## 5. Lifecycle Methods - Creation
+1. constructor(props) - call super(props), initialize state, no side effects
+2. static getDerivedStateFromProps(props, state) - sync state, no side effects
+3. render() - prepare and structure jsx, no side effects
+4. Render Child Components 
+[Deprecated] componentWillMount()
+5. *componentDidMount() - side effects OK, DO NOT update state.
+
+## 6. Lifecycle Methods - Update
+1. getDerivedStateFromProps(props, state) - sync state to props, no side effects, OLD WAY, NIECHE
+[Deprecated] componentWillRecieveProps(props)
+2. *shouldComponentUpdate(nextProps, nextState) - decide whether to continue or not, no side effects
+3. render() - prepare and structure jsx, no side effects
+4. Update Child Component Props
+5. getSnapshotBeforeUpdate(prevProps, prevState) - last minute DOM operations, no side effects, NIECHE
+[Deprecated] componentWillUpdate()
+6. *componentDidUpdate(prevProps, prevState, snapshot) - side effects OK, DO NOT update state, which would trigger re-render 
+
