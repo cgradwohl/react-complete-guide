@@ -168,7 +168,7 @@ ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to
 4. Render Child Components 
 [Deprecated] componentWillMount()
 5. *componentDidMount() - side effects OK, DO NOT update state.
-6. componentWillUnmount() - gets executed (when implemented) right before a Component is removed from the DOM
+6. componentWillUnmount() - gets executed (when implemented) right before a Component is removed from the DOM, used for clean up
 
 ## 6. Lifecycle Methods - Update
 1. getDerivedStateFromProps(props, state) - sync state to props, no side effects, OLD WAY, NIECHE
@@ -179,9 +179,36 @@ ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to
 5. getSnapshotBeforeUpdate(prevProps, prevState) - last minute DOM operations, no side effects, NIECHE
 [Deprecated] componentWillUpdate()
 6. *componentDidUpdate(prevProps, prevState, snapshot) - side effects OK, DO NOT update state, which would trigger re-render 
-7. componentWillUnmount() - gets executed (when implemented) right before a Component is removed from the DOM
+7. componentWillUnmount() - gets executed (when implemented) right before a Component is removed from the DOM, used for cleanup
 
 ## 7. Functional Hooks
 1. useState((state, stateHandler) => {}); - allows you to access state and setState().
 2. useEffects(() => {}, []) - Runs every render cycle (creation or update cycle), componentDidMount() and ComponentDidUpdate() combined
+    a. nothiing - runs on every update/ render cycle
+    b. [] - useEffect() will run when the component is destroyed
+    c. [dep1, dep2, ...] - will run when only when dep1, dep2, ... has changed
+    d. return () => {} - runs AFTER every render cycle
 
+example:
+```
+// Runs every render cycle (creation or )
+  // componentDidMount() and ComponentDidUpdate() combined
+  useEffect(() => {
+    console.log('[Cockpit.js] useEffect(), happens every render cycle');
+    // this code runs when component did mount
+    const timer = setTimeout(() => {
+      alert('DUDEBRO');
+    }, 1000);
+
+    // this code runs when dep un mounts based on the dep args list you pass
+    return () => {
+      clearTimeout(timer);
+      // this runs for the last time
+      console.log('[Cockpit.js] Cleanup work');
+    }
+    // you can pass an array as a second arg 
+    // to useEffects which will tell it to 
+    // run only when that dependency/props has changed.
+    // pass empty array to only runs the first time!
+  }, []);
+```

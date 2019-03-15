@@ -11,11 +11,14 @@ const cockpit = (props) => {
   // componentDidMount() and ComponentDidUpdate() combined
   useEffect(() => {
     console.log('[Cockpit.js] useEffect(), happens every render cycle');
-    // HTTP REQ
-    setTimeout(() => {
+    // this code runs when component did mount
+    const timer = setTimeout(() => {
       alert('DUDEBRO');
     }, 1000);
+
+    // this code runs when dep un mounts based on the dep args list you pass
     return () => {
+      clearTimeout(timer);
       // this runs for the last time
       console.log('[Cockpit.js] Cleanup work');
     }
@@ -25,8 +28,15 @@ const cockpit = (props) => {
     // pass empty array to only runs the first time!
   }, []);
 
+  // 1. nothiing - runs on every update/ render cycle
+  // 2. [] - useEffect() will run when the component is destroyed
+  // 3. [dep1, dep2, ...] - will run when only when dep1, dep2, ... has changed
+  // 4. return () => {} - runs AFTER every render cycle
+
+  // runs for every render/update cycle
   useEffect(() => {
     console.log('[Cockpit.js] 2nd useEffect');
+    // runs AFTER every render cycle
     return () => {
       // this runs for the last time
       console.log('[Cockpit.js] Cleanup work in 2nd useEffect');
