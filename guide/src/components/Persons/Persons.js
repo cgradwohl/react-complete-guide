@@ -6,9 +6,27 @@ class Persons extends Component {
   //   console.log('[Person.js] getDerivedStateFromProps')
   //   return state;
   // }
+
+  // Now this component will only update if 
+  // the nextProps(incoming props) are different then the
+  // ones we currently have.
+
+  /**
+   * REMEMBER THAT OBJECTS AND ARRAYS ARE PASS BY REFERENCE!
+   * the comparison below is a comparison of POINTERS!
+   * this only works because of the way we are handleing the state
+   * cliked event and the change event!! PLEASE SEE nameChangedHandler()
+   * and deletePersonHandler() in App.js!!!!
+   * There we copy a new object/array with the spread 
+   * operator, and pass that new object to this.setState()
+   * Therefore a new object with a new pointer is in state!!
+   */
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('[Person.js] shouldComponentUpdate')
-    return true;
+    if(nextProps.persons !== this.props.persons){
+      return true;
+    } else {
+      return false;
+    }
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {

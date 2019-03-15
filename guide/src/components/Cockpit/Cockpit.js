@@ -12,13 +12,12 @@ const cockpit = (props) => {
   useEffect(() => {
     console.log('[Cockpit.js] useEffect(), happens every render cycle');
     // this code runs when component did mount
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       alert('DUDEBRO');
     }, 1000);
 
     // this code runs when dep un mounts based on the dep args list you pass
     return () => {
-      clearTimeout(timer);
       // this runs for the last time
       console.log('[Cockpit.js] Cleanup work');
     }
