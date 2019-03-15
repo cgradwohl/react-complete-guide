@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Person from './Person/Person';
 
-class Persons extends Component {
+class Persons extends PureComponent {
   // static getDerivedStateFromProps(props, state) {
   //   console.log('[Person.js] getDerivedStateFromProps')
   //   return state;
@@ -21,13 +21,17 @@ class Persons extends Component {
    * operator, and pass that new object to this.setState()
    * Therefore a new object with a new pointer is in state!!
    */
-  shouldComponentUpdate(nextProps, nextState) {
-    if(nextProps.persons !== this.props.persons){
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // if you want to check every prop and determine if this component should update
+  //   // then have this component extend PureComponent instead of Component
+  //   if(nextProps.persons !== this.props.persons
+  //     || nextProps.changed !== this.props.changed
+  //     || nextProps.clicked !== this.props.clicked){
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
     console.log('[Person.js] getSnapshotBeforeUpdate')

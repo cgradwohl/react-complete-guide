@@ -48,9 +48,9 @@ const cockpit = (props) => {
     btnClass = classes.Green;
   }
 
-  if (props.persons.length <= 2) assignedClasses.push(classes.green);
-  if (props.persons.length <= 1) assignedClasses.push(classes.bold);
-  if (props.persons.length === 0) {
+  if (props.personsLength <= 2) assignedClasses.push(classes.green);
+  if (props.personsLength <= 1) assignedClasses.push(classes.bold);
+  if (props.personsLength === 0) {
     const idx = assignedClasses.findIndex(el => el === 'green');
     assignedClasses[idx] = 'red';
   }
@@ -65,4 +65,4 @@ const cockpit = (props) => {
   )
 };
 
-export default cockpit;
+export default React.memo(cockpit);

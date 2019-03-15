@@ -174,6 +174,9 @@ ANSWER: In ES6, arrow functions use lexical scoping — ‘this’ refers to
 1. getDerivedStateFromProps(props, state) - sync state to props, no side effects, OLD WAY, NIECHE
 [Deprecated] componentWillRecieveProps(props)
 2. *shouldComponentUpdate(nextProps, nextState) - decide whether to continue or not, no side effects
+  - this is SO important!
+  - here we can prevent other components from updateing when needed.
+  - ALWAYS ALWAYS ALWAYS UPDATE STATE WITH A NEW COPY OF THE OBJECT/ARRAY
 3. render() - prepare and structure jsx, no side effects
 4. Update Child Component Props
 5. getSnapshotBeforeUpdate(prevProps, prevState) - last minute DOM operations, no side effects, NIECHE
@@ -212,3 +215,6 @@ example:
     // pass empty array to only runs the first time!
   }, []);
 ```
+## 8. React.memo(funcComponent)
+This is wraps the functional component and only renders/update the component is a prop changed!
+
