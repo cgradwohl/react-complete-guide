@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import classes from "./App.css";
 import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
+import WithClass from '../hoc/WithClass';
+import anotherWithClass from '../hoc/anotherWithClass';
+import Aux from '../hoc/Aux';
+
 
 class App extends Component {
   constructor(props) {
@@ -11,13 +15,14 @@ class App extends Component {
   // more modern syntax, setting the class field, could also use this.state in constructor
   state = {
     persons: [
-      { id: 'aqgQDw3r1t1', name: "chris", age: 30 },
+      { id: 'aqgQDw3r1t1', name: "chris", age: "30" },
       { id: 'gwovsh98c7y', name: "patsy", age: 27 },
       { id: 'qaciox8z978', name: "taco", age: 5 }
     ],
     otherState: "This is working!!",
     showPersons: false,
-    showCockpit: true
+    showCockpit: true,
+    changedCounter: 0
   };
 
   // old lifecyle method not that useful
@@ -105,9 +110,25 @@ class App extends Component {
     // update the new value
     persons[personIdx] = person;
 
-    // set the state with new values
-    this.setState({ persons });
-  }
+    // set the state with new values,
+    // THIS IS JUST WRONG!
+    // setState does not automatically update state immediately,
+    // the state update happens when available resources become 
+    // available
+    // Therefore you shoule never use this.state. inside of setState()
+    // this.setState({ 
+    //   persons,
+    //   changedCounter: this.state.changedCounter + 1
+    // });
+
+    // use this to update state with prev state :)
+    this.setState((prevState, props) => {
+      return { 
+        persons,
+        changedCounter: prevState.changedCounter + 1
+      };
+    });
+  };
   togglePersonHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({ showPersons: !doesShow });
@@ -123,7 +144,7 @@ class App extends Component {
         changed={this.nameChangedHandler} />
     }
     return (
-      <div className={classes.App}>
+      <Aux classes={classes.App}>
         <button onClick={() => this.setState({showCockpit: false})}>Remove Cockpit</button>
         {this.state.showCockpit ? 
           <Cockpit
@@ -134,9 +155,9 @@ class App extends Component {
             clicked={this.togglePersonHandler} /> 
             : null}
         {persons}
-      </div>
+      </Aux>
     );
   }
 }
 
-export default App;
+export default anotherWithClass(App, classes.App);

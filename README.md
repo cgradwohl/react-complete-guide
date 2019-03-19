@@ -218,3 +218,55 @@ example:
 ## 8. React.memo(funcComponent)
 This is wraps the functional component and only renders/update the component is a prop changed!
 
+## 9. HOC Components
+- used to return props.children which is anything/everthing in side the tags of the parent component.
+- with an HOC i.e. Aux.js or React.Fragment, you do not have to return one parent element in th renders return, you can wrap you elements in Aux (the HOC) instead. :) 
+- can be used to pass in classes as a prop
+- can be used for Error Handling 
+- there are two types of HOC, 
+  1. a react func component that returns jsx 
+      - use this for structureing html, classes etc
+  2. a reg js func that returns a react func component
+      - use this for error handleing, analystics data etc
+
+## 10. Passing unknown props to a higher order components!!!!!!
+- use the spread operator!!! inside the dyanmic space syntax {}
+`<WrappedComponent {...props} />`
+
+- this will remove all key, vals from the props object {}, and assign them as props!!
+
+## 11. Update State the right way
+- Always use this to update state that depends on previous state,
+and never reference this.state
+this.setState((prevState, props) => {
+  return {
+
+  };
+}) 
+```
+    // set the state with new values,
+    // THIS IS JUST WRONG!
+    // setState does not automatically update state immediately,
+    // the state update happens when available resources become 
+    // available
+    // Therefore you shoule never use this.state. inside of setState()
+    // this.setState({ 
+    //   persons,
+    //   changedCounter: this.state.changedCounter + 1
+    // });
+
+    // use this to update state with prev state :)
+    this.setState((prevState, props) => {
+      return { 
+        persons,
+        changedCounter: prevState.changedCounter + 1
+      };
+    });
+```
+
+## 12. How to pass props! PropType!
+propstypes define the data type of props!
+
+## 13. Refs
+There a few different ways you can use refs:
+1.  
