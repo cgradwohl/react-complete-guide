@@ -3,19 +3,34 @@ import classes from './Person.css';
 import anotherWithClass from '../../../hoc/anotherWithClass';
 import Aux from '../../../hoc/Aux';
 import PropTypes from 'prop-types';
+import AuthContext from '../../../context/auth-context';
+
 class Person extends Component {
+  constructor(props) {
+    super(props);
+    // an obj ref that react gives me.
+    // React will handle the object refence when invoked!
+    this.inputElRef = React.createRef();
+  }
   componentDidMount() {
-    document.querySelectorAll('input')[2].focus();
+    // this.inputEl.focus();
+    this.inputElRef.current.focus();
   }
   render() {
     console.log('[Person.js] rendering ...')
     return (
       <Aux className={classes.Person}>
+        <AuthContext.Consumer>
+          {(contextObj => 
+            contextObj.authed ? <p>YES! AUTH!</p> : <p>No. Auth.</p>
+          )}
+        </AuthContext.Consumer>
         {/* mutating state in parent component from a child presentational compnent */}
         <p onClick={this.props.click}>I am {this.props.name} and I am {this.props.age} years old!</p>
         <p>{this.props.children}</p>
         <input 
-          ref="" 
+          // ref={(elReference) => {this.inputEl = elReference}}
+          ref={this.inputElRef}
           onChange={this.props.changed} 
           value={this.props.name} />
       </Aux>

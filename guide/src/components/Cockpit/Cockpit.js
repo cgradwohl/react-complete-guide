@@ -1,6 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import classes from './Cockpit.css';
+import AuthContext from '../../context/auth-context';
 const cockpit = (props) => {
+  const toggleBtnRef = useRef(null);
+
   // if want to base your state on props,
   // you can useSate(){} instead!
   useState((state, stateHandler) => {
@@ -10,17 +13,17 @@ const cockpit = (props) => {
   // Runs every render cycle (creation or )
   // componentDidMount() and ComponentDidUpdate() combined
   useEffect(() => {
-    console.log('[Cockpit.js] useEffect(), happens every render cycle');
+    console.log('[Cockpit.js] useEffect(), happens every render cycle, after mount');
     // this code runs when component did mount
-    setTimeout(() => {
-      alert('DUDEBRO');
-    }, 1000);
-
+    // setTimeout(() => {
+    //   alert('DUDEBRO');
+    // }, 1000);
+    toggleBtnRef.current.click();
     // this code runs when dep un mounts based on the dep args list you pass
     return () => {
-      // this runs for the last time
+      // runs AFTER every render cycle
       console.log('[Cockpit.js] Cleanup work');
-    }
+    };
     // you can pass an array as a second arg 
     // to useEffects which will tell it to 
     // run only when that dependency/props has changed.
@@ -59,8 +62,13 @@ const cockpit = (props) => {
       <h1>{props.title}</h1>
       <p className={assignedClasses.join(' ')}>{props.otherState}</p>
       <button
+        ref={toggleBtnRef}
         className={btnClass}
-        onClick={props.clicked}>Toggle Persons</button>
+        onClick={props.clicked}>Toggle Persons
+      </button>
+      <AuthContext.Consumer>
+        {(contextObj) => <button onClick={contextObj.login}>Login</button>}
+      </AuthContext.Consumer>
     </div>
   )
 };

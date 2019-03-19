@@ -216,7 +216,7 @@ example:
   }, []);
 ```
 ## 8. React.memo(funcComponent)
-This is wraps the functional component and only renders/update the component is a prop changed!
+This is wraps the functional component and only renders/update the component if there is a prop changed!
 
 ## 9. HOC Components
 - used to return props.children which is anything/everthing in side the tags of the parent component.
@@ -228,6 +228,13 @@ This is wraps the functional component and only renders/update the component is 
       - use this for structureing html, classes etc
   2. a reg js func that returns a react func component
       - use this for error handleing, analystics data etc
+
+- React has some built in HOCs you can use:
+```
+If your function component renders the same result given the same props, you can wrap it in a call to React.memo for a performance boost in some cases by memoizing the result. This means that React will skip rendering the component, and reuse the last rendered result.
+```
+1. If your React component’s render() function renders the same result given the same props and state, you can use React.PureComponent for a performance boost in some cases.
+2. React.memo is a higher order component. Used to memoized the rendered result.
 
 ## 10. Passing unknown props to a higher order components!!!!!!
 - use the spread operator!!! inside the dyanmic space syntax {}
@@ -268,5 +275,109 @@ this.setState((prevState, props) => {
 propstypes define the data type of props!
 
 ## 13. Refs
+Used to reference DOM elements
 There a few different ways you can use refs:
-1.  
+
+#### Class Components
+
+1. Pass a function to ref, which sets a class prop as a ref:
+
+```
+componentDidMount() {
+    this.inputEl.focus();
+}
+
+render() {
+  <input ref={(elReference) => {this.inputEl = elReference}} />
+}
+```
+
+This only works in class based componets.
+Above we are setting a reference to the input element, which we can use later to do stuff on it.
+
+2. Use constructor and React.createRef():
+  - an obj ref that react gives me.
+  - React will handle the object reference when invoked!
+```
+constructor(props) {
+    super(props);
+    this.inputElRef = React.createRef();
+  }
+
+componentDidMount() {
+    this.inputElRef.current.focus();
+  }
+render () {
+  <input ref={this.inputElRef}/>
+}
+```
+
+#### Functional Components
+1. useRef hook
+```
+const myFuncComponent = () => {
+  const toggleBtnRef = useRef(null);
+
+  // runs when this component did mount
+  useEffect(() => {
+    // now that element is actually mounted we can setup a reference to our button
+    toggleBtnRef.current.click();
+    return () => {
+      // runs AFTER every render cycle
+    };
+  }, []);
+
+  return (
+    <button ref={toggleBtnRef}></button>
+  )
+}
+```
+
+## 14. How to handle pass through props. React.Context
+This allows you to access certain props globally.
+Context provides a way to pass data through the component tree without having to pass props down manually at every level.
+
+Steps to use context:
+1. In a context folder define the shape of the context API.
+```
+import React from 'react';
+const authContext = React.createContext({
+  authed: false,
+  login: () => {}
+});
+export default authContext;
+```
+2. Define a Context Object to use in a component, to be passed throughout the application.
+
+Define where in source container component you want to PROVIDE context.
+Remember that by binding props and/or state to context it will automatically
+handle the update cycle, i.e. when context updates then render cycle occurs.
+```
+class MyClass extends React.Component {
+  const contextObj = {
+    authed: this.state.auth, // binding to state
+    login: this.loginHandler // bind to a event cb handler
+  };
+  return (
+    <Aux classes={classes.App}>
+      <AuthContext.Provider value={contextObj}>
+        <MyComponent prop1={} prop2={}>
+      </AuthContext.Provider>
+    </Aux>
+  )
+}
+```
+
+3. Define what slices of context and what components will CONSUME context.
+Here we pass context data to the elements in the component.
+```
+return (
+  <Aux className={classes.Person}>
+    <AuthContext.Consumer>
+      {(contextObj => 
+        contextObj.authed ? <p>YES! AUTH!</p> : <p>No. Auth.</p>
+      )}
+    </AuthContext.Consumer>
+  </Aux>
+)
+```

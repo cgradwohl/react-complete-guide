@@ -5,7 +5,7 @@ import Cockpit from "../components/Cockpit/Cockpit";
 import WithClass from '../hoc/WithClass';
 import anotherWithClass from '../hoc/anotherWithClass';
 import Aux from '../hoc/Aux';
-
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
   constructor(props) {
@@ -22,7 +22,8 @@ class App extends Component {
     otherState: "This is working!!",
     showPersons: false,
     showCockpit: true,
-    changedCounter: 0
+    changedCounter: 0,
+    auth: false
   };
 
   // old lifecyle method not that useful
@@ -133,6 +134,11 @@ class App extends Component {
     const doesShow = this.state.showPersons;
     this.setState({ showPersons: !doesShow });
   }
+
+  loginHandler = () => {
+    this.setState({auth: true})
+  }
+
   render() {
     console.log('[App.js] render')
     let persons = null;
@@ -141,20 +147,35 @@ class App extends Component {
       persons = <Persons
         persons={this.state.persons}
         clicked={this.deletePersonHandler}
-        changed={this.nameChangedHandler} />
+        changed={this.nameChangedHandler} 
+        isAuthed={this.state.auth}
+      />
     }
+    // when you bind context to props or state
+    // the the update cycle will work as expected!
+    // This context object will now be available to
+    // any other component that is wrapped by the 
+    // the Context provider!
+    // HERE WE TO PROVIDE CONTEXT :)
+    // WE DONT WANT TO CONSUME CONTEXT
+    const contextObj = {
+      authed: this.state.auth,
+      login: this.loginHandler
+    };
     return (
       <Aux classes={classes.App}>
         <button onClick={() => this.setState({showCockpit: false})}>Remove Cockpit</button>
-        {this.state.showCockpit ? 
-          <Cockpit
-            title={this.props.appTitle}
-            showPersons={this.state.showPersons}
-            otherState={this.state.otherState}
-            personsLength={this.state.persons.length}
-            clicked={this.togglePersonHandler} /> 
-            : null}
-        {persons}
+        <AuthContext.Provider value={contextObj}>
+          {this.state.showCockpit ? (
+            <Cockpit
+              title={this.props.appTitle}
+              showPersons={this.state.showPersons}
+              otherState={this.state.otherState}
+              personsLength={this.state.persons.length}
+              clicked={this.togglePersonHandler}
+          /> ) : null}
+          {persons}
+        </AuthContext.Provider>
       </Aux>
     );
   }

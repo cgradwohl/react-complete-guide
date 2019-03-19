@@ -48,6 +48,8 @@ class Persons extends PureComponent {
 
   render() {
     console.log('[Person.js] rendering ...')
+    // HERE WE DONT WANT TO PROVIDE CONTEXT
+    // WE WANT TO CONSUME CONTEXT :)
     return this.props.persons.map((obj, idx) => {
       return (
         <Person
@@ -55,7 +57,8 @@ class Persons extends PureComponent {
           click={this.props.clicked.bind(this, idx)}
           name={obj.name}
           age={obj.age}
-          changed={this.props.changed.bind(this, obj.id)} />
+          changed={this.props.changed.bind(this, obj.id)}
+        />
       )
     });
   }
