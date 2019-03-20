@@ -12,19 +12,23 @@ class Person extends Component {
     // React will handle the object refence when invoked!
     this.inputElRef = React.createRef();
   }
+
+  // this static field must be spelt like this
+  static contextType = AuthContext;
+
   componentDidMount() {
     // this.inputEl.focus();
     this.inputElRef.current.focus();
+
+    // you must reference context now like this!
+    console.log(this.context.authed);
   }
   render() {
     console.log('[Person.js] rendering ...')
     return (
       <Aux className={classes.Person}>
-        <AuthContext.Consumer>
-          {(contextObj => 
-            contextObj.authed ? <p>YES! AUTH!</p> : <p>No. Auth.</p>
-          )}
-        </AuthContext.Consumer>
+        {this.context.authed ? <p>YES! AUTH!</p> : <p>No. Auth.</p>}
+          
         {/* mutating state in parent component from a child presentational compnent */}
         <p onClick={this.props.click}>I am {this.props.name} and I am {this.props.age} years old!</p>
         <p>{this.props.children}</p>

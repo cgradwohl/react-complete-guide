@@ -381,3 +381,52 @@ return (
   </Aux>
 )
 ```
+
+## 15. New Context API, contextType
+What if we want to access the context in JS code, rather what is we do not want to refernce context in ONLY jsx. 
+
+
+Steps to use context:
+1. In a context folder define the shape of the context API.
+```
+import React from 'react';
+const authContext = React.createContext({
+  authed: false,
+  login: () => {}
+});
+export default authContext;
+```
+2. Define a Context Object to use in a component, to be passed throughout the application.
+
+Define where in source container component you want to PROVIDE context.
+Remember that by binding props and/or state to context it will automatically
+handle the update cycle, i.e. when context updates then render cycle occurs.
+```
+class MyClass extends React.Component {
+  const contextObj = {
+    authed: this.state.auth, // binding to state
+    login: this.loginHandler // bind to a event cb handler
+  };
+  return (
+    <Aux classes={classes.App}>
+      <AuthContext.Provider value={contextObj}>
+        <MyComponent prop1={} prop2={}>
+      </AuthContext.Provider>
+    </Aux>
+  )
+}
+```
+
+3. In your component, import your context object from step 1 and in your components  define the contextType API to be your context object. You can now use this in jsx OR in js!
+
+```
+static contextType = AuthContext;
+```
+4. React now provides access to context, that has been defined by contextType. To reference the contentType you defined, you can now use `{this.context.authed ? <p>YES! AUTH!</p> : <p>No. Auth.</p>}` in jsx or simply `console.log(this.context.auth)` in js, but it must be spelt like `this.context`. `context` is now a reserved word.
+
+## useContext
+1. define context object as we did above
+2. in functional component, import useContext and then assign it to a variable:
+`const authContextObj = useContext(AuthContext);`
+
+then you can reference `authContextObj` anwhere in jsx or in js!
