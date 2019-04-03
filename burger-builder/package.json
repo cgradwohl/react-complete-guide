@@ -16,13 +16,12 @@
     "css-loader": "1.0.0",
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
-    "eslint": "5.12.0",
     "eslint-config-react-app": "^3.0.8",
     "eslint-loader": "2.1.1",
     "eslint-plugin-flowtype": "2.50.1",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jsx-a11y": "6.1.2",
-    "eslint-plugin-react": "7.12.4",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.0",
     "file-loader": "2.0.0",
     "fs-extra": "7.0.1",
     "html-webpack-plugin": "4.0.0-alpha.2",
@@ -38,6 +37,7 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.5.0",
     "postcss-safe-parser": "4.0.1",
+    "prettier": "^1.16.4",
     "react": "^16.8.4",
     "react-app-polyfill": "^0.2.2",
     "react-dev-utils": "^8.0.0",
@@ -55,7 +55,15 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "precommit": "NODE_ENV=production lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "pretty-quick --staged",
+      "eslint src/ --fix",
+      "git add"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -115,5 +123,14 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
+    "pretty-quick": "^1.10.0"
   }
 }
